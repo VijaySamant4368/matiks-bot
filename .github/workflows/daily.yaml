@@ -52,18 +52,18 @@ jobs:
           print(f'New schedule for tomorrow: {new_cron} UTC (IST bounds: 6 AM - 10 PM)')
 
           # Update the workflow file
-          with open('.github/workflows/daily.yml', 'r') as f:
+          with open('.github/workflows/daily.yaml', 'r') as f:
               content = f.read()
 
           updated = re.sub(r'-\s*cron:\s*\"[^\"]+\"', f'- cron: \"{new_cron}\"', content)
 
-          with open('.github/workflows/daily.yml', 'w') as f:
+          with open('.github/workflows/daily.yaml', 'w') as f:
               f.write(updated)
           "
 
           # Commit and push the updated schedule back to git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/workflows/daily.yml
+          git add .github/workflows/daily.yaml
           git commit -m "ci: randomize next schedule time" || exit 0
           git push
