@@ -2,13 +2,6 @@ from playwright.sync_api import sync_playwright
 import random
 import time
 
-start = random.randint(10000, 86400 // 4)
-end = random.randint(86400 // 2, 86400 - 10000)
-delay = random.randint(start, end)
-
-print(f"Waiting {delay} seconds before running")
-time.sleep(delay)
-
 URL = "https://matiks.com/search?gameType=DMAS&gameMode=ONLINE_SEARCH&timeLimit=1"
 
 with sync_playwright() as p:

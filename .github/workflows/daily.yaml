@@ -2,8 +2,12 @@ name: Daily Matiks
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    # This static cron will automatically update after every run!
+    - cron: "15 8 * * *"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   run:
@@ -22,5 +26,44 @@ jobs:
           pip install -r requirements.txt
           playwright install chromium
 
-      - name: Run
+      - name: Run Script
         run: python daily.py
+
+      - name: Reschedule Next Run
+        if: github.event_name == 'schedule'
+        run: |
+          python -c "
+          import random, re
+
+          # Generate random IST time between 6:00 AM and 10:00 PM (22:00)
+          # IST is UTC+5:30, so:
+          # 6:00 AM IST = 00:30 UTC
+          # 10:00 PM IST = 16:30 UTC
+          
+          hour = random.randint(0, 16)
+          if hour == 16:
+              minute = random.randint(0, 30)
+          elif hour == 0:
+              minute = random.randint(30, 59)
+          else:
+              minute = random.randint(0, 59)
+
+          new_cron = f'{minute} {hour} * * *'
+          print(f'New schedule for tomorrow: {new_cron} UTC (IST bounds: 6 AM - 10 PM)')
+
+          # Update the workflow file
+          with open('.github/workflows/daily.yml', 'r') as f:
+              content = f.read()
+
+          updated = re.sub(r'-\s*cron:\s*\"[^\"]+\"', f'- cron: \"{new_cron}\"', content)
+
+          with open('.github/workflows/daily.yml', 'w') as f:
+              f.write(updated)
+          "
+
+          # Commit and push the updated schedule back to git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/daily.yml
+          git commit -m "ci: randomize next schedule time" || exit 0
+          git push
