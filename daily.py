@@ -5,7 +5,10 @@ import time
 URL = "https://matiks.com/search?gameType=DMAS&gameMode=ONLINE_SEARCH&timeLimit=1"
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
+    browser = p.chromium.launch(
+        headless=True,
+        args=["--no-sandbox", "--disable-setuid-sandbox"]
+    )
 
     context = browser.new_context(
         storage_state="matiks_state.json"
