@@ -31,7 +31,7 @@ with sync_playwright() as p:
         page.keyboard.press("Enter")
 
         print(f"=== Iteration {i + 1} ===")
-        print(page.locator("body").inner_html())
+        page.screenshot(path=f"debug_{i+1}.png", full_page=True)
 
     print("Done:", page.url)
 

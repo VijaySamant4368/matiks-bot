@@ -29,6 +29,13 @@ jobs:
       - name: Run Script
         run: python daily.py
 
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshots
+          path: debug_*.png
+
       - name: Reschedule Next Run
         # if: github.event_name == 'schedule'
         run: |
@@ -67,3 +74,4 @@ jobs:
           git add .github/workflows/daily.yaml
           git commit -m "ci: randomize next schedule time" || exit 0
           git push
+
