@@ -30,7 +30,7 @@ jobs:
         run: python daily.py
 
       - name: Reschedule Next Run
-        if: github.event_name == 'schedule'
+        # if: github.event_name == 'schedule'
         run: |
           python -c "
           import random, re

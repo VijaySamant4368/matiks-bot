@@ -30,6 +30,9 @@ with sync_playwright() as p:
         page.keyboard.type(value)
         page.keyboard.press("Enter")
 
+        print(f"=== Iteration {i + 1} ===")
+        print(page.locator("body").inner_html())
+
     print("Done:", page.url)
 
     context.close()
