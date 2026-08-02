@@ -15,6 +15,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.MATIKS_ACTIONS }}
+          persist-credentials: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -73,7 +76,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://${GH_PAT}@github.com/${{ github.repository }}.git
           git add .github/workflows/daily.yaml
           git commit -m "ci: randomize next schedule time" || exit 0
-          git push
+          git push origin main
