@@ -30,7 +30,7 @@ jobs:
           playwright install chromium
 
       - name: Run Script
-        run: python your_script.py
+        run: python daily.py
 
       - name: Upload screenshots
         if: always()
