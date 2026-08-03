@@ -1,0 +1,40 @@
+name: Four Times Daily
+
+on:
+  schedule:
+    # 8:15 AM IST (2:45 UTC)
+    - cron: "45 2 * * *"
+    # 1:15 PM IST (7:45 UTC)
+    - cron: "45 7 * * *"
+    # 6:15 PM IST (12:45 UTC)
+    - cron: "45 12 * * *"
+    # 10:15 PM IST (16:45 UTC)
+    - cron: "45 16 * * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Run Script
+        run: python your_script.py
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshots
+          path: debug_*.png
