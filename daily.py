@@ -1,8 +1,9 @@
 import json
 from playwright.sync_api import sync_playwright
 import random
-
-URL = "https://matiks.com/search?gameType=DMAS&gameMode=ONLINE_SEARCH&timeLimit=1"
+URLs = ["https://matiks.com/search?gameType=DMAS&gameMode=ONLINE_SEARCH&timeLimit=1", "https://matiks.com/search?gameType=FASTEST_FINGER&gameMode=ONLINE_SEARCH&timeLimit=1", "https://matiks.com/search?gameType=DMAS_ABILITY&gameMode=ONLINE_SEARCH&timeLimit=2"]
+        # + ["https://matiks.com/search?gameType=MIND_SNAP&gameMode=ONLINE_SEARCH&timeLimit=1"] 
+URL = random.choice(URLs)
 STATE_FILE = "matiks_state.json"
 
 with open(STATE_FILE, "r", encoding="utf-8") as f:
@@ -11,7 +12,7 @@ with open(STATE_FILE, "r", encoding="utf-8") as f:
 
 with sync_playwright() as p:
     browser = p.chromium.launch(
-        headless=True,
+        headless=False,
         args=["--no-sandbox", "--disable-setuid-sandbox"]
     )
 
