@@ -3,7 +3,7 @@ name: Daily Matiks
 on:
   schedule:
     # This static cron will automatically update after every run!
-    - cron: "54 13 * * *"
+    - cron: "2 9 * * *"
   workflow_dispatch:
 
 permissions:
